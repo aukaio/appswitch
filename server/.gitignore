@@ -1,0 +1,8 @@
+secret.py
+*.py[co]
+*.DS_*
+# Packages
+*.egg
+*.egg-info
+.installed.cfg
+pip-log.txt
