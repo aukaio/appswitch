@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AppSwitch</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_checkout">Pay with mCASH</string>
+</resources>
