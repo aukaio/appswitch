@@ -35,21 +35,21 @@ Response: {"id": "p1234", "uri":"http://mca.sh/p/p1234"}
 
 App-switch Android
 ==================
-
+```
 mcash://qr?code=http://mca.sh/p/p1234/
-
-
+```
+```
 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mcash://qr?code=http://mca.sh/p/" + id + "/"));
 startActivityForResult(intent, requestCode);
-
+```
 
 The mCASH-app does the following when payment is completed:
-
+```
 setResult(resultCode, intent);
 finish();
-
+```
 Your app will then get a call back (and an appswitch) through the OS to onActivityResult(). resultCode can be either
-RESULT_OK (-1) or RESULT_CANCELLED (0)
+`RESULT_OK (-1)` or `RESULT_CANCELLED (0)`
 
 
 App-switch iOS
