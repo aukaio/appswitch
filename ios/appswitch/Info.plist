@@ -48,6 +48,8 @@
 			</array>
 		</dict>
 	</array>
+	<key>ApiUrl</key>
+	<string>https://66abaf6a.ngrok.io</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

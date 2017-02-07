@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C852F4451E4A12A600C28462 /* AppSwitchProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C852F4441E4A12A600C28462 /* AppSwitchProtocol.swift */; };
 		DD2C36BD1DE1D4EC002294A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2C36BC1DE1D4EC002294A6 /* AppDelegate.swift */; };
 		DD2C36BF1DE1D4EC002294A6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2C36BE1DE1D4EC002294A6 /* ViewController.swift */; };
 		DD2C36C21DE1D4EC002294A6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD2C36C01DE1D4EC002294A6 /* Main.storyboard */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C852F4441E4A12A600C28462 /* AppSwitchProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSwitchProtocol.swift; sourceTree = "<group>"; };
 		DD2C36B91DE1D4EC002294A6 /* appswitch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = appswitch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD2C36BC1DE1D4EC002294A6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DD2C36BE1DE1D4EC002294A6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -58,11 +60,12 @@
 			children = (
 				DD2C36BC1DE1D4EC002294A6 /* AppDelegate.swift */,
 				DD2C36BE1DE1D4EC002294A6 /* ViewController.swift */,
-				DD2C36C01DE1D4EC002294A6 /* Main.storyboard */,
-				DD2C36C31DE1D4EC002294A6 /* Assets.xcassets */,
-				DD2C36C51DE1D4EC002294A6 /* LaunchScreen.storyboard */,
-				DD2C36C81DE1D4EC002294A6 /* Info.plist */,
 				DD2C36CE1DE1DA7C002294A6 /* PaymentApi.swift */,
+				C852F4441E4A12A600C28462 /* AppSwitchProtocol.swift */,
+				DD2C36C01DE1D4EC002294A6 /* Main.storyboard */,
+				DD2C36C51DE1D4EC002294A6 /* LaunchScreen.storyboard */,
+				DD2C36C31DE1D4EC002294A6 /* Assets.xcassets */,
+				DD2C36C81DE1D4EC002294A6 /* Info.plist */,
 			);
 			path = appswitch;
 			sourceTree = "<group>";
@@ -99,8 +102,8 @@
 				TargetAttributes = {
 					DD2C36B81DE1D4EC002294A6 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = 3X7ZB29BLR;
-						ProvisioningStyle = Automatic;
+						DevelopmentTeam = 4662867BRW;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -143,6 +146,7 @@
 				DD2C36CF1DE1DA7C002294A6 /* PaymentApi.swift in Sources */,
 				DD2C36BF1DE1D4EC002294A6 /* ViewController.swift in Sources */,
 				DD2C36BD1DE1D4EC002294A6 /* AppDelegate.swift in Sources */,
+				C852F4451E4A12A600C28462 /* AppSwitchProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,11 +269,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 3X7ZB29BLR;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 4662867BRW;
 				INFOPLIST_FILE = appswitch/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mcash.appswitch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "2154095f-e53f-4e8f-a4e2-12fe7c58b30c";
+				PROVISIONING_PROFILE_SPECIFIER = DevWildcardProv;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -278,11 +285,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 3X7ZB29BLR;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 4662867BRW;
 				INFOPLIST_FILE = appswitch/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mcash.appswitch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "2154095f-e53f-4e8f-a4e2-12fe7c58b30c";
+				PROVISIONING_PROFILE_SPECIFIER = DevWildcardProv;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, AppSwitchProtocol {
 
     var tid: String = ""
     
@@ -20,36 +20,36 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         self.textview.text = ""
         self.spinner.hidesWhenStopped = true
-        
-        NotificationCenter.default.addObserver(self, selector: #selector (ViewController.handlePaymentSuccess), name: Notification.Name("AppSwitchSuccess"), object: nil)
-        
-         NotificationCenter.default.addObserver(self, selector: #selector (ViewController.handlePaymentFailure), name: Notification.Name("AppSwitchFailure"), object: nil)
+
+        // Map possible app switch results to protocol functions
+        [AppSwitchResult.success: #selector(ViewController.handlePaymentSuccess),
+         AppSwitchResult.failure: #selector(ViewController.handlePaymentFailure)
+        ].forEach {
+            NotificationCenter.default.addObserver(self,
+                                                selector: $0.value,
+                                                name: Notification.Name($0.key.rawValue),
+                                                object: nil)
+        }
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+
+    // APP SWITCH PROTOCOL FUNCTIONS
+    func handlePaymentSuccess() {
+        self.textview.text.append("\n  3. Appswitch with mCash payment successful")
+        self.getPaymentStatus()
     }
-    
+
+    func handlePaymentFailure() {
+        self.textview.text.append("\n  3. Appswitch with mCash payment failed")
+    }
+
     @IBAction func onClick(_ sender: Any) {
         self.createPaymentRequest()
     }
     
-    func showError(message: String, action: UIAlertAction){
+    func showError(message: String, action: UIAlertAction) {
         let alert = UIAlertController(title: "Error", message:message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(action)
-        self.present(alert, animated: true, completion: {})
-        
-    }
-    
-    // NOTIFICATION CALLBACKS
-    func handlePaymentSuccess(){
-        self.textview.text.append("\n  3. Appswitch with mCash payment successful")
-        self.getPaymentStatus()
-
-    }
-    
-    func handlePaymentFailure(){
-        self.textview.text.append("\n  3. Appswitch with mCash payment failed")
+        self.present(alert, animated: true)
     }
     
     // MCASH CALLS
@@ -58,27 +58,17 @@ class ViewController: UIViewController {
         self.textview.text = "\n Results: \n\n  1. Sending createPayment request ..."
         self.spinner.startAnimating()
         
-        PaymentApi.sharedInstance.createPaymentRequest(callback: {(success, json) in
+        PaymentApi.sharedInstance.createPaymentRequest { [weak self] (success, data) in
             DispatchQueue.main.async {
-                if success, let data = json as? [String: AnyObject]{
-                    self.tid = data["id"] as! String
-                    self.textview.text.append("\n  2. Got transaction id (tid): " + self.tid)
-                    self.openMcash()
-                }
-                else {
-                    self.showError(message: "Create payment failed",
-                                   action: UIAlertAction(title: "OK",
-                                                         style: UIAlertActionStyle.default,
-                                                         handler: {(a) in}))
-                }
-                self.spinner.stopAnimating()
+                self?.handlePaymentRequest(success: success, json: data as? [String: AnyObject])
             }
-        })
+        }
     }
     
-    func getPaymentStatus(){
+    func getPaymentStatus() {
         self.textview.text.append("\n  4. Fetching payment status from mCash ...")
         self.spinner.startAnimating()
+
         PaymentApi.sharedInstance.getPaymentStatus(tid: self.tid, callback: {(success, json) in
             DispatchQueue.main.async {
                 if success, let data = json as? [String: AnyObject]{
@@ -97,23 +87,31 @@ class ViewController: UIViewController {
         })
         
     }
-    
-    func openMcash(){
-        let urlString: String  = "mcash://qr?code=http://mca.sh/p/" + self.tid + "/&success_uri=appswitch://success&failure_uri=appswitch://failure"
-    
-        let url = URL(string: urlString)
-        if UIApplication.shared.canOpenURL(url!){
-            UIApplication.shared.open(url!, options: [:], completionHandler: {(success) -> Void in
-                
-            })
-        }
-        else{
-            self.textview.text.append("\n  3. AppSwitch failure, mCash testbed app not found on device ...")
-            self.showError(message: "AppSwitch failed. No mCash app available",
+
+    func handlePaymentRequest(success: Bool, json: [String: AnyObject]?) {
+        if success, let data = json {
+            self.tid = data["id"] as! String
+            self.textview.text.append("\n  2. Got transaction id (tid): " + self.tid)
+            self.openMcash(uri: "mcash://qr?code=http://mca.sh/p/" + self.tid + "/&success_uri=appswitch://success&failure_uri=appswitch://failure")
+        } else {
+            self.showError(message: "Create payment failed",
                            action: UIAlertAction(title: "OK",
-                                                 style: UIAlertActionStyle.destructive,
-                                                 handler: {(a) in}))
+                                                 style: UIAlertActionStyle.default))
         }
+
+        self.spinner.stopAnimating()
+    }
+
+    func openMcash(uri: String) {
+        if let url = URL(string: uri), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+            return
+        }
+
+        self.textview.text.append("\n  3. AppSwitch failure, mCash testbed app not found on device ...")
+        self.showError(message: "AppSwitch failed. No mCash app available",
+                       action: UIAlertAction(title: "OK",
+                                             style: UIAlertActionStyle.destructive))
     }
 }
 
